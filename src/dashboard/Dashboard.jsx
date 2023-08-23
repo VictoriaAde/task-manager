@@ -23,6 +23,13 @@ const Dashboard = () => {
       )
     );
   };
+  const editTask = (editedTask) => {
+    setTasks(
+      tasks.map((task) =>
+        task.id === editedTask.id ? { ...editedTask } : task
+      )
+    );
+  };
 
   const openTaskForm = () => {
     setTaskFormIsOpen(true);
@@ -61,7 +68,12 @@ const Dashboard = () => {
           onClose={closeTaskForm}
         />
         <div id="tasks">
-          <TaskList tasks={tasks} onDelete={deleteTask} onToggle={toggleTask} />
+          <TaskList
+            tasks={tasks}
+            onDelete={deleteTask}
+            onToggle={toggleTask}
+            onEdit={editTask}
+          />
         </div>
       </div>
     </div>
