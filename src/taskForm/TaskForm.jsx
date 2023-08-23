@@ -40,6 +40,7 @@ const TaskForm = ({ isOpen, onClose, onAdd }) => {
         date: "",
         description: "",
       });
+      onClose();
     }
   };
 

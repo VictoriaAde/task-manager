@@ -7,8 +7,8 @@ const Dashboard = () => {
   const [taskFormIsOpen, setTaskFormIsOpen] = useState(false);
   const [tasks, setTasks] = useState([]);
 
-  const addTask = (text) => {
-    const newTask = { id: Date.now(), text, completed: false };
+  const addTask = (task) => {
+    const newTask = { id: Date.now(), ...task, completed: false };
     setTasks([...tasks, newTask]);
   };
 
@@ -34,11 +34,10 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-lg w-full h-screen overflow-scroll  bg-white p-8 rounded-md shadow-lg">
+      <div className=" w-full bg-white p-4 md:p-8 rounded-md shadow-lg">
         <h1 className="text-3xl font-extrabold text-gray-900 mb-8">
           Task Manager
         </h1>
-
         <div
           onClick={openTaskForm}
           id="addNew"
@@ -51,6 +50,7 @@ const Dashboard = () => {
             <FaPlus />
           </button>
         </div>
+        <div className="w-full h-[0.0125rem] bg-black bg-opacity-10 mt-8"></div>
 
         <h5 className="text-left my-7 text-xl font-medium text-gray-900">
           Tasks
@@ -60,7 +60,6 @@ const Dashboard = () => {
           isOpen={taskFormIsOpen}
           onClose={closeTaskForm}
         />
-
         <div id="tasks">
           <TaskList tasks={tasks} onDelete={deleteTask} onToggle={toggleTask} />
         </div>
