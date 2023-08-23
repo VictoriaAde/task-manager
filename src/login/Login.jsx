@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -37,7 +38,7 @@ const Login = () => {
           Login
         </h2>
         <form className="space-y-6" onSubmit={handleSubmit}>
-          <div className="">
+          <div className="flex flex-col gap-2">
             <label htmlFor="email-address" className="text-gray-700">
               Email address
             </label>
@@ -47,13 +48,13 @@ const Login = () => {
               type="email"
               autoComplete="email"
               required
-              className=""
+              className="focus:border-[#04a134] "
               placeholder="Email address"
               value={formData.email}
               onChange={handleChange}
             />
           </div>
-          <div className="">
+          <div className="flex flex-col gap-2">
             <label htmlFor="password" className="text-gray-700">
               Password
             </label>
@@ -63,16 +64,27 @@ const Login = () => {
               type="password"
               autoComplete="current-password"
               required
-              className=""
+              className="focus:border-[#04a134] "
               placeholder="Password"
               value={formData.password}
               onChange={handleChange}
             />
           </div>
-          <div className="">
-            <button type="submit" className="">
+          <div className="flex justify-center">
+            <button
+              type="submit"
+              className="bg-[#04a134] text-white px-6 py-2 rounded-sm mt-5"
+            >
               Login
             </button>
+          </div>
+          <div className="text-center">
+            <p className="text-gray-700">
+              Don't have an account?{" "}
+              <Link to="/" className="text-[#04a134] font-bold">
+                Register
+              </Link>
+            </p>
           </div>
         </form>
       </div>
