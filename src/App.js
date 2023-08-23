@@ -2,9 +2,9 @@ import "./App.css";
 
 function App() {
   return (
-    <div className="App">
+    <main className="main">
       <h1>Task Manager</h1>
-    </div>
+    </main>
   );
 }
 
