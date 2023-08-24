@@ -52,9 +52,18 @@ const ListItem = styled("li")`
 
 const ArrowDownIcon = styled("span")``;
 
-const options = ["All tasks", "Completed", "Pending"];
+const options = [
+  "All Tasks",
+  "Completed",
+  "Pending",
+  "Newer First",
+  "Older First",
+];
 
-export default function Dropdown({ setSelectedFilter }) {
+export default function Dropdown({
+  onSortingOptionChange,
+  selectedSortingOption,
+}) {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
 
@@ -63,17 +72,17 @@ export default function Dropdown({ setSelectedFilter }) {
   const onOptionClicked = (value) => () => {
     setSelectedOption(value);
     setIsOpen(false);
-    setSelectedFilter(value); // Set the selected filter
+    onSortingOptionChange(value); // Update the selected sorting option
   };
 
   useEffect(() => {
-    console.log(selectedOption); // This will log the updated selected option
+    // console.log(selectedOption); // This will log the updated selected option
   }, [selectedOption]);
 
   return (
     <DropDownContainer>
       <DropDownHeader onClick={toggling}>
-        {selectedOption || "All tasks"}
+        {selectedOption || "All Tasks"}
         <ArrowDownIcon>
           <MdOutlineKeyboardArrowDown size={20} />
         </ArrowDownIcon>
