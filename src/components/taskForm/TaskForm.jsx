@@ -153,7 +153,7 @@ const TaskForm = ({ isOpen, onClose, onAdd }) => {
           <button
             onClick={onClose}
             type="button"
-            className=" text-white bg-gray-500 px-6 py-2 rounded-sm mt-5 mr-4"
+            className=" text-white bg-[#5e5476] px-6 py-2 rounded-sm mt-5 mr-4"
           >
             Close
           </button>

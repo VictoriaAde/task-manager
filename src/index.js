@@ -1,12 +1,12 @@
 import React from "react";
 import Root from "./routes/root";
-import ErrorPage from "./errorpage/ErrorPage";
+import ErrorPage from "./pages/errorpage/ErrorPage";
 import reportWebVitals from "./reportWebVitals";
 import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Registration from "./Registration/Registration";
-import Login from "./login/Login";
-import Dashboard from "./dashboard/Dashboard";
+import Registration from "./pages/Registration/Registration";
+import Login from "./pages/login/Login";
+import Dashboard from "./pages/dashboard/Dashboard";
 import "./index.css";
 
 const router = createBrowserRouter([

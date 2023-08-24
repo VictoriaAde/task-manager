@@ -17,18 +17,29 @@ const TaskItem = ({ task, onDelete, onToggle, onEdit }) => {
   };
 
   return (
-    <div
-      className={`space-y-6 max-w-lg w-full  bg-white p-4 md:p-8 rounded-md shadow-lg mb-8 ${
-        task.completed ? "completed" : ""
-      }`}
-    >
-      <input
-        className="appearance-none checked:bg-[#5c31b3] focus:checked:bg-[#5c31b3] w-5 h-5"
-        type="checkbox"
-        checked={task.completed}
-        onChange={() => onToggle(task.id)}
-      />
+    <div className="space-y-6 max-w-lg w-full  bg-white p-4 md:p-8 rounded-md shadow-lg mb-8">
+      <div className="flex justify-between items-center">
+        <div>
+          <input
+            className="appearance-none checked:bg-[#5c31b3] focus:checked:bg-[#5c31b3] w-5 h-5"
+            type="checkbox"
+            checked={task.completed}
+            onChange={() => onToggle(task.id)}
+          />
+        </div>
 
+        <div>
+          {task.completed ? (
+            <span className="ml-2 bg-[#5c31b3] text-white text-xs rounded-lg py-1 px-3">
+              Completed
+            </span>
+          ) : (
+            <span className="ml-2 bg-red-500 text-white text-xs rounded-lg p-1 px-3">
+              Pending
+            </span>
+          )}
+        </div>
+      </div>
       {isEditing ? (
         <div className="flex flex-col gap-4">
           <input
@@ -64,11 +75,11 @@ const TaskItem = ({ task, onDelete, onToggle, onEdit }) => {
         <div>
           <div className="flex justify-between max-sm:flex-col max-sm:gap-1">
             <h2 className="text-lg font-medium">{task.taskTitle}</h2>
-            <span className="text-gray-600">{task.date}</span>
+            <span className="text-gray-600 text-sm">{task.date}</span>
           </div>
           <div className="w-full h-[0.0125rem] bg-black bg-opacity-10 mt-8"></div>
 
-          <p>{task.description}</p>
+          <p className="text-base">{task.description}</p>
           <div className="w-full h-[0.0125rem] bg-black bg-opacity-10 mt-8"></div>
         </div>
       )}

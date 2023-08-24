@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { FaPlus } from "react-icons/fa";
-import TaskForm from "../taskForm/TaskForm";
-import TaskList from "../taskList/TaskList";
+import TaskForm from "../../components/taskForm/TaskForm";
+import TaskList from "../../components/taskList/TaskList";
+import Dropdown from "../../components/dropdown/Dropdown";
 
 const Dashboard = () => {
   const [taskFormIsOpen, setTaskFormIsOpen] = useState(false);
@@ -45,17 +46,23 @@ const Dashboard = () => {
         <h1 className="text-3xl font-extrabold text-gray-900 mb-8">
           Task Manager
         </h1>
-        <div
-          onClick={openTaskForm}
-          id="addNew"
-          data-bs-toggle="taskForm"
-          data-bs-target="#form"
-          className="inline-flex gap-2 cursor-pointer border border-[#04a134] p-1"
-        >
-          <span className="text-lg">Add New Task</span>
-          <button>
-            <FaPlus />
-          </button>
+        <div className="flex justify-between items-center">
+          <div
+            onClick={openTaskForm}
+            id="addNew"
+            data-bs-toggle="taskForm"
+            data-bs-target="#form"
+            className="inline-flex gap-2 cursor-pointer border border-[#04a134] p-1 rounded"
+          >
+            <span className="text-base">Add New Task</span>
+            <button>
+              <FaPlus />
+            </button>
+          </div>
+
+          <div>
+            <Dropdown />
+          </div>
         </div>
         <div className="w-full h-[0.0125rem] bg-black bg-opacity-10 mt-8"></div>
 
