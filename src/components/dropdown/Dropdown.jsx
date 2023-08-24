@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { MdOutlineKeyboardArrowDown } from "react-icons/md";
 
@@ -28,7 +28,7 @@ const DropDownListContainer = styled("div")``;
 
 const DropDownList = styled("ul")`
   position: absolute;
-  width: 269px;
+  width: 180px;
   overflow-y: scroll;
   height: 250px;
   padding: 0;
@@ -52,9 +52,9 @@ const ListItem = styled("li")`
 
 const ArrowDownIcon = styled("span")``;
 
-const options = ["Completed", "Pending", "Ascending", "Descending"];
+const options = ["All tasks", "Completed", "Pending"];
 
-export default function Dropdown() {
+export default function Dropdown({ setSelectedFilter }) {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
 
@@ -63,8 +63,13 @@ export default function Dropdown() {
   const onOptionClicked = (value) => () => {
     setSelectedOption(value);
     setIsOpen(false);
-    console.log(selectedOption);
+    setSelectedFilter(value); // Set the selected filter
   };
+
+  useEffect(() => {
+    console.log(selectedOption); // This will log the updated selected option
+  }, [selectedOption]);
+
   return (
     <DropDownContainer>
       <DropDownHeader onClick={toggling}>

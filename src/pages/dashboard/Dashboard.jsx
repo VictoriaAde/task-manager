@@ -7,6 +7,7 @@ import Dropdown from "../../components/dropdown/Dropdown";
 const Dashboard = () => {
   const [taskFormIsOpen, setTaskFormIsOpen] = useState(false);
   const [tasks, setTasks] = useState([]);
+  const [selectedFilter, setSelectedFilter] = useState(null); // Add this state
 
   const addTask = (task) => {
     const newTask = { id: Date.now(), ...task, completed: false };
@@ -40,6 +41,15 @@ const Dashboard = () => {
     setTaskFormIsOpen(false);
   };
 
+  const filterTasks = () => {
+    if (selectedFilter === "Completed") {
+      return tasks.filter((task) => task.completed);
+    } else if (selectedFilter === "Pending") {
+      return tasks.filter((task) => !task.completed);
+    } else {
+      return tasks; // Return all tasks for "All tasks" option
+    }
+  };
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className=" w-full bg-white p-4 md:p-8 rounded-md shadow-lg">
@@ -61,7 +71,7 @@ const Dashboard = () => {
           </div>
 
           <div>
-            <Dropdown />
+            <Dropdown setSelectedFilter={setSelectedFilter} />
           </div>
         </div>
         <div className="w-full h-[0.0125rem] bg-black bg-opacity-10 mt-8"></div>
@@ -76,7 +86,7 @@ const Dashboard = () => {
         />
         <div id="tasks">
           <TaskList
-            tasks={tasks}
+            tasks={filterTasks()} // Apply the filter to tasks
             onDelete={deleteTask}
             onToggle={toggleTask}
             onEdit={editTask}
