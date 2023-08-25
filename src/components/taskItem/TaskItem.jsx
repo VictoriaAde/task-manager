@@ -5,6 +5,7 @@ import { LuEdit } from "react-icons/lu";
 const TaskItem = ({ task, onDelete, onToggle, onEdit }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedTask, setEditedTask] = useState({ ...task });
+  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false); // State to show/hide delete confirmation
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -107,7 +108,7 @@ const TaskItem = ({ task, onDelete, onToggle, onEdit }) => {
       )}
 
       <div className="flex justify-center gap-8">
-        <button onClick={() => onDelete(task.id)} className="">
+        <button onClick={() => setShowDeleteConfirmation(true)} className="">
           <RiDeleteBin6Line fontSize={22} />
         </button>
 
@@ -115,6 +116,34 @@ const TaskItem = ({ task, onDelete, onToggle, onEdit }) => {
           <LuEdit fontSize={20} />
         </button>
       </div>
+
+      {/* Delete confirmation modal */}
+      {showDeleteConfirmation && (
+        <div className="flex items-center justify-center">
+          <div className="bg-white p-4 rounded-md shadow-lg">
+            <p className="mb-4 text-center">
+              Are you sure you want to delete this task?
+            </p>
+            <div className="flex justify-center gap-4">
+              <button
+                onClick={() => {
+                  onDelete(task._id);
+                  setShowDeleteConfirmation(false);
+                }}
+                className="bg-red-500 text-white px-4 py-2 rounded"
+              >
+                Yes
+              </button>
+              <button
+                onClick={() => setShowDeleteConfirmation(false)}
+                className="bg-gray-300 text-gray-600 px-4 py-2 rounded"
+              >
+                No
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
