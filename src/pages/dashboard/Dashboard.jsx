@@ -52,6 +52,10 @@ const Dashboard = () => {
     }
   };
 
+  const handleFilterChange = (filter) => {
+    setSelectedFilter(filter);
+  };
+
   const handleSortingOptionChange = (option) => {
     setSelectedSortingOption(option);
   };
@@ -72,6 +76,7 @@ const Dashboard = () => {
     selectedFilter,
     selectedSortingOption
   );
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className=" w-full bg-white p-4 md:p-8 rounded-md shadow-lg">
@@ -96,6 +101,8 @@ const Dashboard = () => {
             <Dropdown
               onSortingOptionChange={handleSortingOptionChange}
               selectedSortingOption={selectedSortingOption}
+              onFilterChange={handleFilterChange}
+              selectedFilter={selectedFilter}
             />
           </div>
         </div>
@@ -111,8 +118,7 @@ const Dashboard = () => {
         />
         <div id="tasks">
           <TaskList
-            tasks={filteredAndSortedTasks} // Use filteredAndSortedTasks
-            // tasks={filterTasks()} // Apply the filter to tasks
+            tasks={filteredAndSortedTasks}
             onDelete={deleteTask}
             onToggle={toggleTask}
             onEdit={editTask}

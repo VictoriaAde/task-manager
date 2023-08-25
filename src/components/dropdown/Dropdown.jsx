@@ -63,6 +63,8 @@ const options = [
 export default function Dropdown({
   onSortingOptionChange,
   selectedSortingOption,
+  onFilterChange,
+  selectedFilter,
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
@@ -72,12 +74,11 @@ export default function Dropdown({
   const onOptionClicked = (value) => () => {
     setSelectedOption(value);
     setIsOpen(false);
-    onSortingOptionChange(value); // Update the selected sorting option
+    onSortingOptionChange(value);
+    onFilterChange(value);
   };
 
-  useEffect(() => {
-    // console.log(selectedOption); // This will log the updated selected option
-  }, [selectedOption]);
+  useEffect(() => {}, [selectedOption]);
 
   return (
     <DropDownContainer>
