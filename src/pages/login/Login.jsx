@@ -34,7 +34,14 @@ const Login = () => {
 
       console.log("Login Successful:", response.data);
 
-      dispatch(login(response.data.token)); // Assuming the token is in response.data.token
+      // Extract the token from the response data
+      const token = response.data.token;
+
+      // Store the token securely in local storage
+      localStorage.setItem("authToken", token);
+
+      dispatch(login(response.data.token));
+
       navigate("/dashboard");
 
       setFormData({

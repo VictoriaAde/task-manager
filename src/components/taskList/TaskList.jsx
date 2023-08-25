@@ -11,15 +11,18 @@ const TaskList = ({ tasks, onDelete, onToggle, onEdit }) => {
           </p>
         </div>
       ) : (
-        tasks.map((task) => (
-          <TaskItem
-            key={task.id}
-            task={task}
-            onDelete={onDelete}
-            onToggle={onToggle}
-            onEdit={onEdit}
-          />
-        ))
+        tasks.map((task) => {
+          console.log("Task_id:", task._id); // Log the _id for debugging
+          return (
+            <TaskItem
+              key={task._id}
+              task={task}
+              onDelete={onDelete}
+              onToggle={onToggle}
+              onEdit={onEdit}
+            />
+          );
+        })
       )}
     </div>
   );

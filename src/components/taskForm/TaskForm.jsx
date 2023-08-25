@@ -5,8 +5,8 @@ import axiosInstance from "../../api";
 const TaskForm = ({ isOpen, onClose, onAdd }) => {
   const [formData, setFormData] = useState({
     taskTitle: "",
-    date: "",
     description: "",
+    date: "",
   });
 
   if (!isOpen) {
@@ -56,25 +56,25 @@ const TaskForm = ({ isOpen, onClose, onAdd }) => {
     ) {
       try {
         const response = await axiosInstance.post("/tasks", {
-          tasktitle: formData.taskTitle,
-          date: formData.date,
-          description: formData.description,
+          title: formData.taskTitle,
+          content: formData.description,
+          due_date: formData.date,
         });
 
-        console.log("post successfully created:", response.data);
+        console.log("Post successfully created:", response.data);
 
         // Call the 'onAdd' function with the new task data
         onAdd({
           taskTitle: formData.taskTitle,
-          date: formData.date,
           description: formData.description,
+          date: formData.date,
         });
 
         // Reset the form data to empty values
         setFormData({
           taskTitle: "",
-          date: "",
           description: "",
+          date: "",
         });
 
         onClose();

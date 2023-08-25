@@ -5,6 +5,15 @@ import { LuEdit } from "react-icons/lu";
 const TaskItem = ({ task, onDelete, onToggle, onEdit }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedTask, setEditedTask] = useState({ ...task });
+  console.log("Task in TaskItem:", task); // Add this line
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, "0");
+    const day = date.getDate().toString().padStart(2, "0");
+    return `${day}-${month}-${year}`;
+  };
 
   const handleEdit = () => {
     setIsEditing(true);
@@ -24,7 +33,7 @@ const TaskItem = ({ task, onDelete, onToggle, onEdit }) => {
             className="appearance-none checked:bg-[#5c31b3] focus:checked:bg-[#5c31b3] w-5 h-5"
             type="checkbox"
             checked={task.completed}
-            onChange={() => onToggle(task.id)}
+            onChange={() => onToggle(task._id)}
           />
         </div>
 
@@ -73,13 +82,14 @@ const TaskItem = ({ task, onDelete, onToggle, onEdit }) => {
         </div>
       ) : (
         <div>
-          <div className="flex justify-between max-sm:flex-col max-sm:gap-1">
-            <h2 className="text-lg font-medium">{task.taskTitle}</h2>
-            <span className="text-gray-600 text-sm">{task.date}</span>
+          <div className="flex justify-between items-center">
+            <h2 className="text-lg font-medium">{task.title}</h2>
+            <span className="text-gray-600 text-sm">
+              {formatDate(task.due_date)}
+            </span>
           </div>
           <div className="w-full h-[0.0125rem] bg-black bg-opacity-10 mt-8"></div>
-
-          <p className="text-base">{task.description}</p>
+          <p className="text-base">{task.content}</p>
           <div className="w-full h-[0.0125rem] bg-black bg-opacity-10 mt-8"></div>
         </div>
       )}
