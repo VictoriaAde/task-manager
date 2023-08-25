@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaPlus } from "react-icons/fa";
 import TaskForm from "../../components/taskForm/TaskForm";
 import TaskList from "../../components/taskList/TaskList";
@@ -16,6 +16,26 @@ const Dashboard = () => {
   const [showLogoutConfirmation, setShowLogoutConfirmation] = useState(false);
 
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+
+  const [loading, setLoading] = useState(true);
+
+  const fetchTasks = async () => {
+    try {
+      const response = await axiosInstance.get("/tasks");
+      const tasksFromAPI = response.data;
+      setTasks(tasksFromAPI);
+      setLoading(false); // Mark loading as complete
+    } catch (error) {
+      console.error("Could not fetch tasks:", error);
+      setLoading(false); // Mark loading as complete even in case of error
+    }
+  };
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      fetchTasks();
+    }
+  }, [isAuthenticated]);
 
   if (!isAuthenticated) {
     return <Navigate to="/login" />;
@@ -180,12 +200,16 @@ const Dashboard = () => {
           onClose={closeTaskForm}
         />
         <div id="tasks">
-          <TaskList
-            tasks={filteredAndSortedTasks}
-            onDelete={deleteTask}
-            onToggle={toggleTask}
-            onEdit={editTask}
-          />
+          {loading ? (
+            <p>Loading tasks...</p>
+          ) : (
+            <TaskList
+              tasks={filteredAndSortedTasks}
+              onDelete={deleteTask}
+              onToggle={toggleTask}
+              onEdit={editTask}
+            />
+          )}
         </div>
       </div>
     </div>
