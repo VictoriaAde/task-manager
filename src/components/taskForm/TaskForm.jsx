@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { IoMdClose } from "react-icons/io";
+import axiosInstance from "../../api";
 
 const TaskForm = ({ isOpen, onClose, onAdd }) => {
   const [formData, setFormData] = useState({
@@ -8,40 +8,17 @@ const TaskForm = ({ isOpen, onClose, onAdd }) => {
     date: "",
     description: "",
   });
+
   if (!isOpen) {
     return null;
   }
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
     }));
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault(); // Prevent the default form submission behavior
-
-    if (
-      formData.taskTitle.trim() &&
-      formData.date.trim() &&
-      formData.description.trim()
-    ) {
-      // Call the 'onAdd' function with the new task data
-      onAdd({
-        taskTitle: formData.taskTitle,
-        date: formData.date,
-        description: formData.description,
-      });
-
-      // Reset the form data to empty values
-      setFormData({
-        taskTitle: "",
-        date: "",
-        description: "",
-      });
-      onClose();
-    }
   };
 
   // const handleSubmit = async (e) => {
@@ -52,40 +29,65 @@ const TaskForm = ({ isOpen, onClose, onAdd }) => {
   //     formData.date.trim() &&
   //     formData.description.trim()
   //   ) {
-  //     try {
-  //       const response = await axios.post("http://localhost:3001/api/login", {
-  //         tasktitle: formData.taskTitle,
-  //         date: formData.date,
-  //         description: formData.description,
-  //       });
+  //     // Call the 'onAdd' function with the new task data
+  //     onAdd({
+  //       taskTitle: formData.taskTitle,
+  //       date: formData.date,
+  //       description: formData.description,
+  //     });
 
-  //       console.log("Login Successful:", response.data);
-
-  //       // Call the 'onAdd' function with the new task data
-  //       onAdd({
-  //         taskTitle: formData.taskTitle,
-  //         date: formData.date,
-  //         description: formData.description,
-  //       });
-
-  //       // Reset the form data to empty values
-  //       setFormData({
-  //         taskTitle: "",
-  //         date: "",
-  //         description: "",
-  //       });
-
-  //       // Redirect to a new page after successful submission
-  //       window.location.href = "/dashboard";
-  //     } catch (error) {
-  //       console.error("Login Error:", error);
-  //     }
+  //     // Reset the form data to empty values
+  //     setFormData({
+  //       taskTitle: "",
+  //       date: "",
+  //       description: "",
+  //     });
+  //     onClose();
   //   }
   // };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (
+      formData.taskTitle.trim() &&
+      formData.date.trim() &&
+      formData.description.trim()
+    ) {
+      try {
+        const response = await axiosInstance.post("/tasks", {
+          tasktitle: formData.taskTitle,
+          date: formData.date,
+          description: formData.description,
+        });
+
+        console.log("post successfully created:", response.data);
+
+        // Call the 'onAdd' function with the new task data
+        onAdd({
+          taskTitle: formData.taskTitle,
+          date: formData.date,
+          description: formData.description,
+        });
+
+        // Reset the form data to empty values
+        setFormData({
+          taskTitle: "",
+          date: "",
+          description: "",
+        });
+
+        onClose();
+      } catch (error) {
+        console.error("Could not create task:", error);
+      }
+    }
+  };
 
   return (
     <div className="fixed left-0 top-0 bottom-0 bg-black bg-opacity-80 w-full flex justify-center items-center">
       <form
+        action="POST"
         className="space-y-6 max-w-lg w-full overflow-scroll  bg-white p-8 rounded-md shadow-lg relative"
         onSubmit={handleSubmit}
         onClick={(e) => {

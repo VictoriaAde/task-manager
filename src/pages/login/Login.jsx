@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { login } from "../../redux/authSlice";
 import { useNavigate } from "react-router-dom";
+import axiosInstance from "../../api";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -27,12 +27,14 @@ const Login = () => {
     dispatch(login());
 
     try {
-      const response = await axios.post("http://localhost:3001/api/login", {
+      const response = await axiosInstance.post("/login", {
         email: formData.email,
         password: formData.password,
       });
 
       console.log("Login Successful:", response.data);
+
+      dispatch(login(response.data.token)); // Assuming the token is in response.data.token
       navigate("/dashboard");
 
       setFormData({
@@ -58,7 +60,8 @@ const Login = () => {
         <h2 className="text-center text-3xl font-extrabold text-gray-900 mb-8">
           Login
         </h2>
-        <form className="space-y-6" onSubmit={handleSubmit}>
+
+        <form action="POST" className="space-y-6" onSubmit={handleSubmit}>
           <div className="flex flex-col gap-2">
             <label htmlFor="email-address" className="text-gray-700">
               Email address
