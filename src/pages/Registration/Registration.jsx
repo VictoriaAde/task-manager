@@ -9,6 +9,9 @@ const Registration = () => {
     password: "",
     confirmPassword: "",
   });
+  const [passwordMatch, setPasswordMatch] = useState(true);
+  const [passwordLengthValid, setPasswordLengthValid] = useState(true);
+  const [registrationError, setRegistrationError] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -16,10 +19,22 @@ const Registration = () => {
       ...prevData,
       [name]: value,
     }));
+
+    if (name === "password" || name === "confirmPassword") {
+      if (name === "confirmPassword") {
+        setPasswordMatch(value === formData.password);
+      }
+      setPasswordLengthValid(value.length >= 8);
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!passwordMatch || !passwordLengthValid) {
+      console.error("Invalid password");
+      return;
+    }
     try {
       const response = await axios.post("http://localhost:3001/api/register", {
         username: formData.username,
@@ -35,9 +50,18 @@ const Registration = () => {
         confirmPassword: "",
       });
     } catch (error) {
-      console.error("Registration Error:", error);
+      if (error.response) {
+        if (error.response.status === 400) {
+          setRegistrationError("Email already exists.");
+        } else if (error.response.status === 500) {
+          setRegistrationError("An error occurred while registering the user.");
+        }
+      } else {
+        setRegistrationError("Registration error occurred.");
+      }
     }
   };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full bg-white p-8 rounded-md shadow-lg">
@@ -72,14 +96,65 @@ const Registration = () => {
               type="email"
               autoComplete="email"
               required
-              className="focus:border-[#04a134] "
+              className={`focus:border-[#04a134] ${
+                registrationError ? "border-red-500" : ""
+              }`}
               placeholder="Email address"
               value={formData.email}
               onChange={handleChange}
             />
+            {registrationError && (
+              <p className="text-red-500">{registrationError}</p>
+            )}
           </div>
 
           <div className="flex flex-col gap-2">
+            <label htmlFor="password" className="text-gray-700">
+              Password
+            </label>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              autoComplete="new-password"
+              required
+              className={`focus:border-[#04a134] ${
+                !passwordLengthValid || !passwordMatch ? "border-red-500" : ""
+              }`}
+              placeholder="Password"
+              value={formData.password}
+              onChange={handleChange}
+            />
+            {!passwordLengthValid && (
+              <p className="text-red-500">
+                Password must be at least 8 characters.
+              </p>
+            )}
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <label htmlFor="confirm-password" className="text-gray-700">
+              Confirm Password
+            </label>
+            <input
+              id="confirm-password"
+              name="confirmPassword"
+              type="password"
+              autoComplete="new-password"
+              required
+              className={`focus:border-[#04a134] ${
+                !passwordMatch ? "border-red-500" : ""
+              }`}
+              placeholder="Confirm Password"
+              value={formData.confirmPassword}
+              onChange={handleChange}
+            />
+            {!passwordMatch && (
+              <p className="text-red-500">Passwords do not match.</p>
+            )}
+          </div>
+
+          {/* <div className="flex flex-col gap-2">
             <label htmlFor="password" className="text-gray-700">
               Password
             </label>
@@ -111,7 +186,7 @@ const Registration = () => {
               value={formData.confirmPassword}
               onChange={handleChange}
             />
-          </div>
+          </div> */}
 
           <div className="flex justify-center">
             <button

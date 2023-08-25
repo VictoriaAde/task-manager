@@ -1,12 +1,19 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { login } from "../../redux/authSlice";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
+  const [loginError, setLoginError] = useState("");
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -14,23 +21,37 @@ const Login = () => {
       [name]: value,
     }));
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    dispatch(login());
+
     try {
       const response = await axios.post("http://localhost:3001/api/login", {
         email: formData.email,
         password: formData.password,
       });
+
       console.log("Login Successful:", response.data);
-      window.location.href = "/dashboard";
+      navigate("/dashboard");
+
       setFormData({
         email: "",
         password: "",
       });
     } catch (error) {
-      console.error("Login Error:", error);
+      if (error.response) {
+        if (error.response.status === 404) {
+          setLoginError("Email not found.");
+        } else if (error.response.status === 401) {
+          setLoginError("Incorrect password.");
+        }
+      } else {
+        setLoginError("Login error occurred.");
+      }
     }
   };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full bg-white p-8 rounded-md shadow-lg">
@@ -64,12 +85,16 @@ const Login = () => {
               type="password"
               autoComplete="current-password"
               required
-              className="focus:border-[#04a134] "
+              className={`focus:border-[#04a134] ${
+                loginError ? "border-red-500" : ""
+              }`}
               placeholder="Password"
               value={formData.password}
               onChange={handleChange}
             />
+            {loginError && <p className="text-red-500">{loginError}</p>}
           </div>
+
           <div className="flex justify-center">
             <button
               type="submit"
