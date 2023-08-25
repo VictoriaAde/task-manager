@@ -16,7 +16,7 @@ const TaskList = ({ tasks, onDelete, onToggle, onEdit }) => {
             <TaskItem
               key={task._id}
               task={task}
-              onDelete={onDelete}
+              onDelete={() => onDelete(task._id)}
               onToggle={onToggle}
               onEdit={onEdit}
             />
