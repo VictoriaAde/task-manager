@@ -32,8 +32,6 @@ const Login = () => {
         password: formData.password,
       });
 
-      console.log("Login Successful:", response.data);
-
       // Extract the token from the response data
       const token = response.data.token;
 

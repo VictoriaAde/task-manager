@@ -31,7 +31,7 @@ const Dashboard = () => {
       });
 
       const newTask = response.data.task; // Change this line
-      console.log("New task data:", newTask); // Add this line
+
       setTasks([...tasks, newTask]);
     } catch (error) {
       console.error("Could not add task:", error);

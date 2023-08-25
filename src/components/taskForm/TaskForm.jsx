@@ -21,31 +21,6 @@ const TaskForm = ({ isOpen, onClose, onAdd }) => {
     }));
   };
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-
-  //   if (
-  //     formData.taskTitle.trim() &&
-  //     formData.date.trim() &&
-  //     formData.description.trim()
-  //   ) {
-  //     // Call the 'onAdd' function with the new task data
-  //     onAdd({
-  //       taskTitle: formData.taskTitle,
-  //       date: formData.date,
-  //       description: formData.description,
-  //     });
-
-  //     // Reset the form data to empty values
-  //     setFormData({
-  //       taskTitle: "",
-  //       date: "",
-  //       description: "",
-  //     });
-  //     onClose();
-  //   }
-  // };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -55,13 +30,11 @@ const TaskForm = ({ isOpen, onClose, onAdd }) => {
       formData.description.trim()
     ) {
       try {
-        const response = await axiosInstance.post("/tasks", {
+        await axiosInstance.post("/tasks", {
           title: formData.taskTitle,
           content: formData.description,
           due_date: formData.date,
         });
-
-        console.log("Post successfully created:", response.data);
 
         // Call the 'onAdd' function with the new task data
         onAdd({

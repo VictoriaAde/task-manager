@@ -12,7 +12,6 @@ const TaskList = ({ tasks, onDelete, onToggle, onEdit }) => {
         </div>
       ) : (
         tasks.map((task) => {
-          console.log("Task_id:", task._id); // Log the _id for debugging
           return (
             <TaskItem
               key={task._id}
