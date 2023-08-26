@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { IoMdClose } from "react-icons/io";
-import axiosInstance from "../../api";
 
-const TaskForm = ({ isOpen, onClose, onAdd }) => {
+const TaskForm = ({ isOpen, onClose, onSubmit }) => {
   const [formData, setFormData] = useState({
     title: "",
     content: "",
@@ -21,7 +20,7 @@ const TaskForm = ({ isOpen, onClose, onAdd }) => {
     }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
     if (
@@ -29,31 +28,20 @@ const TaskForm = ({ isOpen, onClose, onAdd }) => {
       formData.due_date.trim() &&
       formData.content.trim()
     ) {
-      try {
-        const response = await axiosInstance.post("/tasks", {
-          title: formData.title,
-          content: formData.content,
-          due_date: formData.due_date,
-        });
+      onSubmit(formData); // Call the onSubmit prop with the form data
+      setFormData({
+        title: "",
+        content: "",
+        due_date: "",
+      });
 
-        // Call the 'onAdd' function with the new task data after successful creation
-        onAdd(response.data.task);
-
-        console.log(response, "response taskform");
-
-        // Reset the form data to empty values
-        setFormData({
-          title: "",
-          content: "",
-          due_date: "",
-        });
-
-        onClose();
-      } catch (error) {
-        console.error("Could not create task:", error);
-      }
+      onClose();
     }
   };
+
+  if (!isOpen) {
+    return null;
+  }
 
   return (
     <div className="fixed left-0 top-0 bottom-0 bg-black bg-opacity-80 w-full flex justify-center items-center">

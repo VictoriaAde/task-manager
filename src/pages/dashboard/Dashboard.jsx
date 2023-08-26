@@ -41,12 +41,12 @@ const Dashboard = () => {
     return <Navigate to="/login" />;
   }
 
-  const addTask = async (task) => {
+  const handleTaskSubmit = async (formData) => {
     try {
       const response = await axiosInstance.post("/tasks", {
-        title: task.title,
-        content: task.content,
-        due_date: task.due_date,
+        title: formData.title,
+        content: formData.content,
+        due_date: formData.due_date,
         completed: false,
       });
 
@@ -195,7 +195,7 @@ const Dashboard = () => {
           Tasks
         </h5>
         <TaskForm
-          onAdd={addTask}
+          onSubmit={handleTaskSubmit}
           isOpen={taskFormIsOpen}
           onClose={closeTaskForm}
         />
