@@ -44,13 +44,14 @@ const Dashboard = () => {
   const addTask = async (task) => {
     try {
       const response = await axiosInstance.post("/tasks", {
-        title: task.taskTitle,
-        content: task.description,
-        due_date: task.date,
+        title: task.title,
+        content: task.content,
+        due_date: task.due_date,
         completed: false,
       });
 
       const newTask = response.data.task;
+      console.log(newTask, "Newtask from dashboard");
       setTasks([...tasks, newTask]);
     } catch (error) {
       console.error("Could not add task:", error);

@@ -2,6 +2,7 @@ import React from "react";
 import TaskItem from "../taskItem/TaskItem";
 
 const TaskList = ({ tasks, onDelete, onToggle, onEdit }) => {
+  console.log(tasks, "taskList");
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-4">
       {tasks?.length === 0 ? (

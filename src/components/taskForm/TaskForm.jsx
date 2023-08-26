@@ -4,9 +4,9 @@ import axiosInstance from "../../api";
 
 const TaskForm = ({ isOpen, onClose, onAdd }) => {
   const [formData, setFormData] = useState({
-    taskTitle: "",
-    description: "",
-    date: "",
+    title: "",
+    content: "",
+    due_date: "",
   });
 
   if (!isOpen) {
@@ -25,29 +25,27 @@ const TaskForm = ({ isOpen, onClose, onAdd }) => {
     e.preventDefault();
 
     if (
-      formData.taskTitle.trim() &&
-      formData.date.trim() &&
-      formData.description.trim()
+      formData.title.trim() &&
+      formData.due_date.trim() &&
+      formData.content.trim()
     ) {
       try {
-        await axiosInstance.post("/tasks", {
-          title: formData.taskTitle,
-          content: formData.description,
-          due_date: formData.date,
+        const response = await axiosInstance.post("/tasks", {
+          title: formData.title,
+          content: formData.content,
+          due_date: formData.due_date,
         });
 
-        // Call the 'onAdd' function with the new task data
-        onAdd({
-          taskTitle: formData.taskTitle,
-          description: formData.description,
-          date: formData.date,
-        });
+        // Call the 'onAdd' function with the new task data after successful creation
+        onAdd(response.data.task);
+
+        console.log(response, "response taskform");
 
         // Reset the form data to empty values
         setFormData({
-          taskTitle: "",
-          description: "",
-          date: "",
+          title: "",
+          content: "",
+          due_date: "",
         });
 
         onClose();
@@ -60,7 +58,6 @@ const TaskForm = ({ isOpen, onClose, onAdd }) => {
   return (
     <div className="fixed left-0 top-0 bottom-0 bg-black bg-opacity-80 w-full flex justify-center items-center">
       <form
-        action="POST"
         className="space-y-6 max-w-lg w-full overflow-scroll  bg-white p-8 rounded-md shadow-lg relative"
         onSubmit={handleSubmit}
         onClick={(e) => {
@@ -74,50 +71,50 @@ const TaskForm = ({ isOpen, onClose, onAdd }) => {
           </button>
         </div>
         <div className="flex flex-col gap-2">
-          <label htmlFor="taskTitle" className="text-gray-700">
+          <label htmlFor="title" className="text-gray-700">
             Task Title
           </label>
           <input
-            id="taskTitle"
-            name="taskTitle"
+            id="title"
+            name="title"
             type="text"
             autoComplete="text"
             required
             className="focus:border-[#04a134] "
-            value={formData.taskTitle}
+            value={formData.title}
             onChange={handleChange}
           />
         </div>
 
         <div className="flex flex-col gap-2">
-          <label htmlFor="date" className="text-gray-700">
+          <label htmlFor="due_date" className="text-gray-700">
             Due date
           </label>
           <input
-            id="date"
-            name="date"
+            id="due_date"
+            name="due_date"
             type="date"
-            autoComplete="date"
+            autoComplete="due_date"
             required
             className="focus:border-[#04a134] "
-            value={formData.date}
+            value={formData.due_date}
             onChange={handleChange}
           />
         </div>
 
         <div className="flex flex-col gap-2">
-          <label htmlFor="description" className="text-gray-700">
-            Description
+          <label htmlFor="content" className="text-gray-700">
+            content
           </label>
 
           <textarea
-            id="description"
-            name="description"
+            id="content"
+            name="content"
             type="text"
             autoComplete="text"
             required
             className="focus:border-[#04a134] "
-            value={formData.description}
+            value={formData.content}
             onChange={handleChange}
             cols="30"
             rows="5"
@@ -132,10 +129,7 @@ const TaskForm = ({ isOpen, onClose, onAdd }) => {
           >
             Close
           </button>
-          <button
-            type="submit"
-            className="bg-[#04a134] text-white px-6 py-2 rounded-sm mt-5"
-          >
+          <button className="bg-[#04a134] text-white px-6 py-2 rounded-sm mt-5">
             Add
           </button>
         </div>
