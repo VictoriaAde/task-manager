@@ -95,7 +95,7 @@ const TaskItem = ({ task, onDelete, onToggle, onEdit }) => {
         </div>
       ) : (
         <div>
-          <div className="flex justify-between items-center">
+          <div className="flex justify-between items-center max-[330px]:flex-col max-[330px]:items-start">
             <h2 className="text-lg font-medium">{task.title}</h2>
             <span className="text-gray-600 text-sm">
               {formatDate(task.due_date)}

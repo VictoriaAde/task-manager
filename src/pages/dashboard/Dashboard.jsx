@@ -24,10 +24,10 @@ const Dashboard = () => {
       const response = await axiosInstance.get("/tasks");
       const tasksFromAPI = response.data;
       setTasks(tasksFromAPI);
-      setLoading(false); // Mark loading as complete
+      setLoading(false);
     } catch (error) {
       console.error("Could not fetch tasks:", error);
-      setLoading(false); // Mark loading as complete even in case of error
+      setLoading(false);
     }
   };
 
@@ -50,8 +50,7 @@ const Dashboard = () => {
         completed: false,
       });
 
-      const newTask = response.data.task; // Change this line
-
+      const newTask = response.data.task;
       setTasks([...tasks, newTask]);
     } catch (error) {
       console.error("Could not add task:", error);
